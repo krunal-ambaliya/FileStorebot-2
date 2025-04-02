@@ -5,12 +5,6 @@ import motor, asyncio
 import motor.motor_asyncio
 from config import DB_URI, DB_NAME
 import certifi
-from pymongo import MongoClient
-from config import DB_URI, DB_NAME
-
-client = MongoClient(DB_URI)
-db = client[DB_NAME]
-batch_collection = db["batch_links"]
 
 dbclient = motor.motor_asyncio.AsyncIOMotorClient(DB_URI, tlsCAFile=certifi.where())
 database = dbclient[DB_NAME]
@@ -61,16 +55,3 @@ async def full_userbase():
 async def del_user(user_id: int):
     await user_data.delete_one({'_id': user_id})
     return
-
-async def save_batch_data(first_msg_id, last_msg_id, channel_id, created_by):
-    data = {
-        "first_msg_id": first_msg_id,
-        "last_msg_id": last_msg_id,
-        "channel_id": channel_id,
-        "created_by": created_by,
-        "timestamp": datetime.utcnow().isoformat()
-    }
-    batch_collection.insert_one(data)
-
-async def get_batch_data():
-    return list(batch_collection.find())
