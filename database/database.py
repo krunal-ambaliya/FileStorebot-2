@@ -4,6 +4,7 @@
 import motor, asyncio
 import motor.motor_asyncio
 from config import DB_URI, DB_NAME
+import certifi
 
 dbclient = motor.motor_asyncio.AsyncIOMotorClient(DB_URI, tlsCAFile=certifi.where())
 database = dbclient[DB_NAME]
